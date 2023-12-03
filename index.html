@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spacecoast Conditions</title>>
+    <style>
+      #video-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .right {
+        background-color: blue;
+        color: white;
+      }
+      .left {
+        background-color: blue;
+        color: white;
+      }
+      .circle-circuit {
+        width: 200px;
+        height: 200px;
+        border-radius: 150%;
+        position: absolute;
+        top: 50px;
+        right: 50px;
+      }
+
+      .circle-code {
+        width: 10px;
+        height: 10px;
+        border-radius: 20%;
+        position: absolute;
+        top: 50px;
+        left: 50px;
+      }
+
+      /* Media query for screens smaller than 768px */
+      @media (max-width: 768px) {
+        .circle-circuit {
+          width: 150px;
+          height: 150px;
+          top: 30px;
+          right: 30px;
+        }
+
+        .circle-code {
+          width: 5px;
+          height: 5px;
+          top: 30px;
+          left: 30px;
+        }
+      }
+
+      /* Media query for screens smaller than 480px */
+      @media (max-width: 480px) {
+        .circle-circuit {
+          width: 100px;
+          height: 100px;
+          top: 20px;
+          right: 20px;
+        }
+
+        .circle-code {
+          width: 3px;
+          height: 3px;
+          top: 20px;
+          left: 20px;
+        }
+      }
+
+    </style>
+    
+ 
+  </head>
+  <body>
+
+  <table class="right circle-circuit ">
+    <tr>
+      <th colspan="2">Wave Report:</th>
+    </tr>
+    {% if wave_data %}
+      <tr>
+        <td>Wave Height:</td>
+        <td>{{ wave_data['waveHeight']['sg'] }} meters</td>
+      </tr>
+      <tr>
+        <td>Wave Direction:</td>
+        <td>{{ wave_data['waveDirection']['sg'] }} degrees</td>
+      </tr>
+      <tr>
+        <td>Wave Period:</td>
+        <td>{{ wave_data['wavePeriod']['sg'] }} seconds</td>
+      </tr>
+    {% else %}
+      <tr>
+        <td colspan="2">No wave data available at the moment.</td>
+      </tr>
+    {% endif %}
+  </table>
+
+
+  <table class="left circle-code ">
+    <tr>
+      <th colspan="2">Weather data:</th>
+    </tr>
+    <tr>
+      <td>Temperature:</td>
+      <td>{{ weather_data['current']['temp_f'] }}&deg;F</td>
+    </tr>
+    <tr>
+      <td>Wind speed:</td>
+
+      <td>{{ weather_data['current']['wind_mph'] }} mph</td>
+    </tr>
+    <tr>
+      <td>Wind direction:</td>
+      <td>{{ weather_data['current']['wind_dir'] }}</td>
+    </tr>
+  </table>
+
+
+
+  <div id="video-container">
+    <div id="player"></div>
+  </div>
+
+  <script>
+    function onYouTubeIframeAPIReady() {
+        var videoId = "{{ video_id }}";
+
+        if (videoId) {
+            new YT.Player('player', {
+                height: '360',
+                width: '640',
+                videoId: videoId,
+                events: {
+                    'onReady': onPlayerReady
+                }
+            });
+        }
+    }
+
+    function onPlayerReady(event) {
+        event.target.playVideo();
+    }
+  </script>
+  <script src="https://www.youtube.com/iframe_api"></script>
+
+
+
+  </body>
+</html>
